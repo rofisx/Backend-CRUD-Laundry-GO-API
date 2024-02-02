@@ -15,7 +15,6 @@
  - akan tampil pesan "Id Not Found" jika Id yang di masukan tidak ada
  - parameter id yang di cari tidak case sensitive, hasilnya akan tetap sama baik dengan huruf kapital atau huruf kecil
 <br/>
-<br/>
 
 **b. Post Data Customer**
 <br/>
@@ -25,14 +24,12 @@
  - phoneNumber(string) : isi nomor telepon atau handphone tidak boleh kosong, jika kosong akan tampil warning "Telepon Customer Kosong" dan harus unik / belum pernah di masukan di database, jika nomer telepon sama dengan yang sudah ada di database maka akan mereturn response "Telepon Customer Sudah Ada !"
  - address(string) : isi alamat tidak boleng kosong dan jumlah karakter minimal 10 karakter yang di masukan, ketika syarat yang ditentukan tidak sesuai maka akan merturn response "Alamat Customer Kosong" atau "Alamat Customer Minimal 10 Karakter"
 <br/>
-<br/>
 
  **c. Update Data Customer**
  <br/>
  **Url : /customers/:id**
  - Sebelum bisa melakukan update ada pengecekan bahwa id customer yang dimasukan ada didalam database.
  Data akan terupdate dan terisi sesuai dengan yang di input, jika data yang di input kosong maka component / row di database tidak terupdate, hanya akan mengupdate row yang input nilainya tidak kosong
-<br/>
 <br/>
 
 **d. Delete Data Customer**
@@ -50,14 +47,12 @@
 **Url : /products**
 - Menampilkan semua data yang ada pada table mst_product
 <br/>
-<br/>
 
 **b. Get Product By Id**
 <br/>
 **Url : /products/:id**
  - akan tampil pesan "Id Not Found" jika Id yang di masukan tidak ada
  - parameter id yang di cari tidak case sensitive, hasilnya akan tetap sama baik dengan huruf kapital atau huruf kecil
-<br/>
 <br/>
 
 **c. Create Product**
@@ -68,14 +63,12 @@
 - price(integer) : input price tidak boleh kosong dan harus angka yang bernilai lebih besar dari nol, jika tidak maka akan tampil warning "Harga Product Invalid"
 - unit : input unit atau satuan barang atau service tidak boleh kosong, jika kosong akan tampil warning "Satuan Product Koson"
 <br/>
-<br/>
 
 **d. Update Product By Id**
 <br/>
 **Url : /products/:id**
 - Sebelum bisa melakukan update ada pengecekan bahwa id product yang dimasukan ada didalam database.
 Data akan terupdate dan terisi sesuai dengan yang di input, jika data yang di input kosong maka component / row di database tidak terupdate, hanya akan mengupdate row yang input nilainya tidak kosong
-<br/>
 <br/>
 
 **e. Delete Product By Id**
@@ -93,7 +86,6 @@ Data akan terupdate dan terisi sesuai dengan yang di input, jika data yang di in
  - akan tampil pesan "Id Not Found" jika Id yang di masukan tidak ada
  - parameter id yang di cari tidak case sensitive, hasilnya akan tetap sama baik dengan huruf kapital atau huruf kecil
 <br/>
-<br/>
 
 **b. Post Data Employee**
 <br/>
@@ -103,14 +95,12 @@ Data akan terupdate dan terisi sesuai dengan yang di input, jika data yang di in
  - phoneNumber(string) : isi nomor telepon atau handphone tidak boleh kosong, jika kosong akan tampil warning "Telepon Employee Kosong" dan harus unik / belum pernah di masukan di database, jika nomer telepon sama dengan yang sudah ada di database maka akan mereturn response "Telepon Employee Sudah Ada !"
  - address(string) : isi alamat tidak boleng kosong dan jumlah karakter minimal 10 karakter yang di masukan, ketika syarat yang ditentukan tidak sesuai maka akan merturn response "Alamat Employee Kosong" atau "Alamat Employee Minimal 10 Karakter"
 <br/>
-<br/>
 
  **c. Update Data Employee**
  <br/>
  **Url : /employees/:id**
  - Sebelum bisa melakukan update ada pengecekan bahwa id employee yang dimasukan ada didalam database.
  Data akan terupdate dan terisi sesuai dengan yang di input, jika data yang di input kosong maka component / row di database tidak terupdate, hanya akan mengupdate row yang input nilainya tidak kosong
-<br/>
 <br/>
 
 **d. Delete Data Employee**
@@ -133,14 +123,12 @@ Data akan terupdate dan terisi sesuai dengan yang di input, jika data yang di in
 - billDetails.productId(string) : id product yang ada di tabel mst_product
 - billDetails.qty(integer) : jumlah ataua kuantitas jasa / barang yang akan di transaksikan, input qty tidak boleh lebih kecil atau sama dengan nol
 <br/>
-<br/>
 
 **b. GET Transaksi Laundry By Id**
 <br/>
 **Url : /transactions/:id_bill**
 - id(string) : merupakan id transaksi yang sudah ada di tabel trs_laundry
 -  Menampilkan detail transaksi dari table trs_laundry, trs_laundry_detail, mst_product, mst_customer,mst_employee berdasarkan id transaksi yang di input
-<br/>
 <br/>
 
 **c. GET Transaksi Laundry By Params**
