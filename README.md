@@ -7,7 +7,7 @@
 =====================================================================================
 ### Detail Menu :
 1. Menu Customer
- Terdiri dari : id,name,phoneNumber,address.
+* Terdiri dari : id,name,phoneNumber,address.
 
 **a. Get Customer By Id**
 **Url : /customers/:id**
@@ -23,16 +23,16 @@
 
  **c. Update Data Customer**
  **Url : /customers/:id**
- Sebelum bisa melakukan update ada pengecekan bahwa id customer yang dimasukan ada didalam database.
+ - Sebelum bisa melakukan update ada pengecekan bahwa id customer yang dimasukan ada didalam database.
  Data akan terupdate dan terisi sesuai dengan yang di input, jika data yang di input kosong maka component / row di database tidak terupdate, hanya akan mengupdate row yang input nilainya tidak kosong
 
 **d. Delete Data Customer**
 **Url : /customers/:id**
-Sebelum bisa melakukan delete ada pengecekan bahwa id customer yang dimasukan ada didalam database. Jikad id customer tidak ada maka akan mereturn response "Customer Id Tidak Ada" dan tidak ada aksi delete.
+- Sebelum bisa melakukan delete ada pengecekan bahwa id customer yang dimasukan ada didalam database. Jikad id customer tidak ada maka akan mereturn response "Customer Id Tidak Ada" dan tidak ada aksi delete.
 --------------------------------------------------------------------------------------
 
 2. Product
- Terdiri dari : id,name,price,unit.
+* Terdiri dari : id,name,price,unit.
 
 **a. Get All Product**
 **Url : /products**
@@ -52,16 +52,16 @@ Sebelum bisa melakukan delete ada pengecekan bahwa id customer yang dimasukan ad
 
 **d. Update Product By Id**
 **Url : /products/:id**
-Sebelum bisa melakukan update ada pengecekan bahwa id product yang dimasukan ada didalam database.
+- Sebelum bisa melakukan update ada pengecekan bahwa id product yang dimasukan ada didalam database.
 Data akan terupdate dan terisi sesuai dengan yang di input, jika data yang di input kosong maka component / row di database tidak terupdate, hanya akan mengupdate row yang input nilainya tidak kosong
 
 **e. Delete Product By Id**
 **Url : /products/:id**
-Sebelum bisa melakukan delete ada pengecekan bahwa id product yang dimasukan ada didalam database. Jikad id product tidak ada maka akan mereturn response "Product Id Tidak Ada" dan tidak ada aksi delete.
+- Sebelum bisa melakukan delete ada pengecekan bahwa id product yang dimasukan ada didalam database. Jikad id product tidak ada maka akan mereturn response "Product Id Tidak Ada" dan tidak ada aksi delete.
 --------------------------------------------------------------------------------------
 
 3. Menu Employee
- Terdiri dari : id,name,phoneNumber,address.
+* Terdiri dari : id,name,phoneNumber,address.
 
 **a. Get Employee By Id**
 **Url : /employees/:id**
@@ -77,16 +77,16 @@ Sebelum bisa melakukan delete ada pengecekan bahwa id product yang dimasukan ada
 
  **c. Update Data Employee**
  **Url : /employees/:id**
- Sebelum bisa melakukan update ada pengecekan bahwa id employee yang dimasukan ada didalam database.
+ - Sebelum bisa melakukan update ada pengecekan bahwa id employee yang dimasukan ada didalam database.
  Data akan terupdate dan terisi sesuai dengan yang di input, jika data yang di input kosong maka component / row di database tidak terupdate, hanya akan mengupdate row yang input nilainya tidak kosong
 
 **d. Delete Data Employee**
 **Url : /employees/:id**
-Sebelum bisa melakukan delete ada pengecekan bahwa id employee yang dimasukan ada didalam database. Jika id employee tidak ada maka akan mereturn response "Employee Id Tidak Ada" dan tidak ada aksi delete.
+- Sebelum bisa melakukan delete ada pengecekan bahwa id employee yang dimasukan ada didalam database. Jika id employee tidak ada maka akan mereturn response "Employee Id Tidak Ada" dan tidak ada aksi delete.
 -------------------------------------------------------------------------------------
 
 4. Transaksi
-Terdiri dari : "billDate,entryDate,finishDate,employeeId,customerId,billDetails.productId,billDetails.qty"
+* Terdiri dari : "billDate,entryDate,finishDate,employeeId,customerId,billDetails.productId,billDetails.qty"
 
 **a. POST Transaksi Laundry**
 **Url : /transactions**
