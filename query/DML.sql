@@ -30,5 +30,11 @@
 
 
 /*=== Transaction ===*/
+INSERT INTO trs_laundry(
+id, billdate, entrydate, finishdate, employeeid, customerid)
+VALUES ('TRS20240202000001', '2024-01-31 07:00:00', '2024-01-31 07:00:00', '2024-01-31 10:00:00', 'EMP20240126000001', 'CUST20240124000002');
 
 /*=== Transaction Detail ===*/
+INSERT INTO trs_laundry_detail(
+billid, productid, qty)
+VALUES ( 'TRS20240202000001', 'SERV20240125000001', 2);
