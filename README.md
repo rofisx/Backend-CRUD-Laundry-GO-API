@@ -1,6 +1,6 @@
-# Backend Laundry GO API 
+# Enigma Laundry GO API 
 ### Persiapan :
-1. Buat terlebih dahulu Database di PostgreSQl dengan Nama "tesLaundryGoApi"
+1. Buat terlebih dahulu Database di PostgreSQl dengan Nama "enigmaLaundryGoApi"
 2. Jalankan Script DDL yang ada pada file "/query/DDL.sql"
 3. Untuk konfigurasi koneksi database bisa di sesuaikan pada file "/config/config.go"
 4. Running aplikasi dengan mengetikan perintah "go run ." pada terminal / console
