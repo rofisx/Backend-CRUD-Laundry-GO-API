@@ -10,11 +10,13 @@
 * Terdiri dari : id,name,phoneNumber,address.
 
 **a. Get Customer By Id**
+<br/>
 **Url : /customers/:id**
  - akan tampil pesan "Id Not Found" jika Id yang di masukan tidak ada
  - parameter id yang di cari tidak case sensitive, hasilnya akan tetap sama baik dengan huruf kapital atau huruf kecil
 
 **b. Post Data Customer**
+<br/>
 **Url : /customers**
  - id(string) : terbuat otomatis dari function yang sudah di siapkan dengan mengambil tahun,bulan dan tahun realtime dikombinasikan dengan kode customer dan counter
  - name(string) : isi nama tidak boleh kosong, jika kosong akan tampil warning "Nama Customer Kosong"
