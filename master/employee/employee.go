@@ -30,12 +30,10 @@ type Result struct {
 	Data    string `json:"data"`
 }
 
-var db = config.ConnectDB()
-
 func GetAllEmployee(c *gin.Context) {
 	query := "SELECT id,name,phonenumber,address FROM mst_employee"
 
-	rows, err := db.Query(query)
+	rows, err := config.ConnectDB().Query(query)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
@@ -67,7 +65,7 @@ func GetAllEmployee(c *gin.Context) {
 func GetEmployeeById(c *gin.Context) {
 	id := c.Param("id")
 	query := "SELECT id,name,phonenumber,address FROM mst_employee WHERE LOWER(id) = LOWER($1)"
-	rows, err := db.Query(query, id)
+	rows, err := config.ConnectDB().Query(query, id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
@@ -126,7 +124,7 @@ func CreateEmployee(c *gin.Context) {
 	var empId string
 	newEmp.Id = createEmployeeId()
 	// fmt.Println("== ada ==", newEmp.Id)
-	err = db.QueryRow(queryInsert, newEmp.Id, newEmp.Name, newEmp.PhoneNumber, newEmp.Address).Scan(&empId)
+	err = config.ConnectDB().QueryRow(queryInsert, newEmp.Id, newEmp.Name, newEmp.PhoneNumber, newEmp.Address).Scan(&empId)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to created Employee"})
@@ -149,7 +147,7 @@ func UpdateEmployeeById(c *gin.Context) {
 		return
 	}
 	query := "SELECT id,name,phonenumber,address FROM mst_employee WHERE LOWER(id) = LOWER($1)"
-	rows, err := db.Query(query, id)
+	rows, err := config.ConnectDB().Query(query, id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
@@ -177,7 +175,7 @@ func UpdateEmployeeById(c *gin.Context) {
 			updEmp.Address = valEmp.Address
 		}
 
-		tx, err := db.Begin()
+		tx, err := config.ConnectDB().Begin()
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error Gaes" + err.Error()})
 			return
@@ -210,7 +208,7 @@ func DeleteEmployeeById(c *gin.Context) {
 	id := c.Param("id")
 	var idemp string
 	query := "SELECT id FROM mst_employee WHERE LOWER(id) = LOWER($1)"
-	err := db.QueryRow(query, id).Scan(&idemp)
+	err := config.ConnectDB().QueryRow(query, id).Scan(&idemp)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Employee Id Tidak Ada"})
 		return
@@ -218,14 +216,14 @@ func DeleteEmployeeById(c *gin.Context) {
 
 	if len(idemp) > 0 {
 		querytrscheck := "SELECT employeeid FROM trs_laundry WHERE LOWER(employeeid) = LOWER($1)"
-		errtrs := db.QueryRow(querytrscheck, id).Scan(&idemp)
+		errtrs := config.ConnectDB().QueryRow(querytrscheck, id).Scan(&idemp)
 		fmt.Println(errtrs)
 		if errtrs == nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "employee id tidak bisa dihapus, sudah digunakan di transaksi"})
 			return
 		}
 
-		tx, err := db.Begin()
+		tx, err := config.ConnectDB().Begin()
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error Gaes" + err.Error()})
 			return
@@ -257,7 +255,7 @@ func createEmployeeId() string {
 	date := getdate.GetYMD()
 	var csId string
 	selectService := "SELECT id FROM mst_employee ORDER BY id DESC LIMIT 1"
-	err := db.QueryRow(selectService).Scan(&csId)
+	err := config.ConnectDB().QueryRow(selectService).Scan(&csId)
 	if err != nil {
 		result = "EMP" + date + "000001"
 	} else {
@@ -278,7 +276,7 @@ func createEmployeeId() string {
 func checkphoneEmployeeExist(csphone string) bool {
 	var result bool = false
 	selectService := "SELECT phonenumber FROM mst_employee WHERE phonenumber = $1"
-	rows, err := db.Query(selectService, csphone)
+	rows, err := config.ConnectDB().Query(selectService, csphone)
 	if err != nil {
 		panic(err)
 	}

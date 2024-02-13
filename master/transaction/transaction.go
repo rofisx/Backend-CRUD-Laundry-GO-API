@@ -61,7 +61,7 @@ func CreateTransaksiLaundry(c *gin.Context) {
 	newTrs.Id = createTrsId()
 	fmt.Println(newTrs.Id)
 
-	tx, errx := db.Begin()
+	tx, errx := config.ConnectDB().Begin()
 	if errx != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error " + err.Error()})
 		return
@@ -150,7 +150,7 @@ func GetTransaksiByIdBill(c *gin.Context) {
 				WHERE aa.billid = $1`
 
 	var dt TrsDetail
-	tx, errrx := db.Begin()
+	tx, errrx := config.ConnectDB().Begin()
 	if errrx != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error " + errrx.Error()})
 		return
@@ -265,7 +265,7 @@ func GetTransaksi(c *gin.Context) {
 				ee.name ILIKE '%'|| $3 ||'%' 
 				ORDER BY aa.id DESC
 		`
-		rows, err = db.Query(query, xstartDate, xendDate, productName)
+		rows, err = config.ConnectDB().Query(query, xstartDate, xendDate, productName)
 		fmt.Println("Kodisi 1")
 	} else if startDate != "" && endDate != "" && productName == "" {
 		xstartDate, errDate = time.Parse(layoutFormat, startDate)
@@ -287,7 +287,7 @@ func GetTransaksi(c *gin.Context) {
 				aa.entrydate BETWEEN $1 AND $2 
 				ORDER BY aa.id DESC
 		`
-		rows, err = db.Query(query, xstartDate, xendDate)
+		rows, err = config.ConnectDB().Query(query, xstartDate, xendDate)
 		fmt.Println("Kodisi 2")
 
 	} else if startDate == "" && endDate == "" && productName != "" {
@@ -295,11 +295,11 @@ func GetTransaksi(c *gin.Context) {
 			 WHERE ee.name ILIKE '%'|| $1 ||'%' 
 			 ORDER BY aa.id DESC
 		`
-		rows, err = db.Query(query, productName)
+		rows, err = config.ConnectDB().Query(query, productName)
 		fmt.Println("Kodisi 3")
 	} else {
 		query += " ORDER BY aa.id DESC "
-		rows, err = db.Query(query)
+		rows, err = config.ConnectDB().Query(query)
 		fmt.Println("Kodisi 4")
 	}
 
@@ -349,7 +349,7 @@ func detailTransactionList(idbill string) []TrsBillDetail {
 				ON bb.productid = cc.id 
 				WHERE aa.id = $1
 				`
-	rows, err := db.Query(queryDetail, idbill)
+	rows, err := config.ConnectDB().Query(queryDetail, idbill)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -372,7 +372,7 @@ func createTrsId() string {
 	date := getdate.GetYMD()
 	var trsId string
 	selectTrsId := "SELECT id FROM trs_laundry WHERE TO_CHAR(billdate,'YYYY-MM-DD') ILIKE '%' || $1 || '%' ORDER BY id DESC LIMIT 1"
-	err := db.QueryRow(selectTrsId, getdate.Get_YMD()).Scan(&trsId)
+	err := config.ConnectDB().QueryRow(selectTrsId, getdate.Get_YMD()).Scan(&trsId)
 	if err != nil {
 		result = "TRS" + date + "000001"
 	} else {
@@ -403,7 +403,7 @@ func checkDate(dateInput string) bool {
 func checkEmployeeIdExist(employeeId string) bool {
 	var result bool = false
 	selectEmployee := "SELECT id FROM mst_employee WHERE LOWER(id) = LOWER($1)"
-	rows, err := db.Query(selectEmployee, employeeId)
+	rows, err := config.ConnectDB().Query(selectEmployee, employeeId)
 	if err != nil {
 		panic(err)
 	}
@@ -416,7 +416,7 @@ func checkEmployeeIdExist(employeeId string) bool {
 func checkCustomerIdExist(customerId string) bool {
 	var result bool = false
 	selectCustomer := "SELECT id FROM mst_customer WHERE LOWER(id) = LOWER($1)"
-	rows, err := db.Query(selectCustomer, customerId)
+	rows, err := config.ConnectDB().Query(selectCustomer, customerId)
 	if err != nil {
 		panic(err)
 	}
@@ -429,7 +429,7 @@ func checkCustomerIdExist(customerId string) bool {
 func checkProductIdExist(productId string) bool {
 	var result bool = false
 	selectProduct := "SELECT id FROM mst_product WHERE LOWER(id) = LOWER($1)"
-	rows, err := db.Query(selectProduct, productId)
+	rows, err := config.ConnectDB().Query(selectProduct, productId)
 	if err != nil {
 		panic(err)
 	}

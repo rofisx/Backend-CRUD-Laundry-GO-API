@@ -29,12 +29,10 @@ type Result struct {
 	Data    string `json:"data"`
 }
 
-var db = config.ConnectDB()
-
 func GetAllCustomer(c *gin.Context) {
 	query := "SELECT id,name,phonenumber,address FROM mst_customer"
 
-	rows, err := db.Query(query)
+	rows, err := config.ConnectDB().Query(query)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
@@ -66,7 +64,7 @@ func GetAllCustomer(c *gin.Context) {
 func GetCustomerById(c *gin.Context) {
 	id := c.Param("id")
 	query := "SELECT id,name,phonenumber,address FROM mst_customer WHERE LOWER(id) = LOWER($1)"
-	rows, err := db.Query(query, id)
+	rows, err := config.ConnectDB().Query(query, id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
@@ -125,7 +123,7 @@ func CreateCustomer(c *gin.Context) {
 	var csId string
 	newCs.Id = createCustomerId()
 	// fmt.Println("== ada ==", newCs.Id)
-	err = db.QueryRow(queryInsert, newCs.Id, newCs.Name, newCs.PhoneNumber, newCs.Address).Scan(&csId)
+	err = config.ConnectDB().QueryRow(queryInsert, newCs.Id, newCs.Name, newCs.PhoneNumber, newCs.Address).Scan(&csId)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to created Customer"})
@@ -148,7 +146,7 @@ func UpdateCustomerById(c *gin.Context) {
 		return
 	}
 	query := "SELECT id,name,phonenumber,address FROM mst_customer WHERE LOWER(id) = LOWER($1)"
-	rows, err := db.Query(query, id)
+	rows, err := config.ConnectDB().Query(query, id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
@@ -176,7 +174,7 @@ func UpdateCustomerById(c *gin.Context) {
 			updCs.Address = valCs.Address
 		}
 
-		tx, err := db.Begin()
+		tx, err := config.ConnectDB().Begin()
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error Gaes" + err.Error()})
 			return
@@ -210,7 +208,7 @@ func DeleteCustomerById(c *gin.Context) {
 	// var valCs Customer
 	var idcs string
 	query := "SELECT id FROM mst_customer WHERE LOWER(id) = LOWER($1)"
-	err := db.QueryRow(query, id).Scan(&idcs)
+	err := config.ConnectDB().QueryRow(query, id).Scan(&idcs)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Customer Id Tidak Ada"})
@@ -219,7 +217,7 @@ func DeleteCustomerById(c *gin.Context) {
 
 	if len(idcs) > 0 {
 		querytrscheck := "SELECT customerid FROM trs_laundry WHERE LOWER(customerid) = LOWER($1)"
-		errtrs := db.QueryRow(querytrscheck, id).Scan(&idcs)
+		errtrs := config.ConnectDB().QueryRow(querytrscheck, id).Scan(&idcs)
 		// fmt.Println("error check", errtrs)
 		if errtrs == nil {
 			fmt.Println(errtrs)
@@ -227,7 +225,7 @@ func DeleteCustomerById(c *gin.Context) {
 			return
 		}
 
-		tx, err := db.Begin()
+		tx, err := config.ConnectDB().Begin()
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error Gaes" + err.Error()})
 			return
@@ -259,7 +257,7 @@ func createCustomerId() string {
 	date := getdate.GetYMD()
 	var csId string
 	selectService := "SELECT id FROM mst_customer ORDER BY id DESC LIMIT 1"
-	err := db.QueryRow(selectService).Scan(&csId)
+	err := config.ConnectDB().QueryRow(selectService).Scan(&csId)
 	if err != nil {
 		result = "CUST" + date + "000001"
 	} else {
@@ -280,7 +278,7 @@ func createCustomerId() string {
 func checkphoneCustomerExist(csphone string) bool {
 	var result bool = false
 	selectService := "SELECT phonenumber FROM mst_customer WHERE phonenumber = $1"
-	rows, err := db.Query(selectService, csphone)
+	rows, err := config.ConnectDB().Query(selectService, csphone)
 	if err != nil {
 		panic(err)
 	}

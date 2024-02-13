@@ -29,12 +29,10 @@ type Result struct {
 	Data    string `json:"data"`
 }
 
-var db = config.ConnectDB()
-
 func GetAllProduct(c *gin.Context) {
 	query := "SELECT id,name,price,unit FROM mst_product"
 
-	rows, err := db.Query(query)
+	rows, err := config.ConnectDB().Query(query)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
@@ -59,7 +57,7 @@ func GetAllProduct(c *gin.Context) {
 func GetProductById(c *gin.Context) {
 	id := c.Param("id")
 	query := "SELECT id,name,price,unit FROM mst_product WHERE LOWER(id) = LOWER($1)"
-	rows, err := db.Query(query, id)
+	rows, err := config.ConnectDB().Query(query, id)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
@@ -114,7 +112,7 @@ func CreateProduct(c *gin.Context) {
 	var prdId string
 	newP.Id = createProductId()
 	fmt.Println(newP.Id)
-	err = db.QueryRow(queryInsert, newP.Id, newP.Name, newP.Price, newP.Unit).Scan(&prdId)
+	err = config.ConnectDB().QueryRow(queryInsert, newP.Id, newP.Name, newP.Price, newP.Unit).Scan(&prdId)
 	if err != nil {
 		// fmt.Println(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to created Product"})
@@ -137,7 +135,7 @@ func UpdateProductById(c *gin.Context) {
 		return
 	}
 	query := "SELECT id,name,price,unit FROM mst_product WHERE LOWER(id) = LOWER($1)"
-	rows, err := db.Query(query, id)
+	rows, err := config.ConnectDB().Query(query, id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
@@ -165,7 +163,7 @@ func UpdateProductById(c *gin.Context) {
 			updPrd.Unit = valPrd.Unit
 		}
 
-		tx, err := db.Begin()
+		tx, err := config.ConnectDB().Begin()
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error Gaes" + err.Error()})
 			return
@@ -198,7 +196,7 @@ func DeleteProductById(c *gin.Context) {
 	id := c.Param("id")
 	var idprd string
 	query := "SELECT id FROM mst_product WHERE LOWER(id) = LOWER($1)"
-	err := db.QueryRow(query, id).Scan(&idprd)
+	err := config.ConnectDB().QueryRow(query, id).Scan(&idprd)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Product Id Tidak Ada"})
@@ -207,7 +205,7 @@ func DeleteProductById(c *gin.Context) {
 
 	if len(idprd) > 0 {
 		querytrscheck := "SELECT productid FROM trs_laundry_detail WHERE LOWER(productid) = LOWER($1)"
-		errtrs := db.QueryRow(querytrscheck, id).Scan(&idprd)
+		errtrs := config.ConnectDB().QueryRow(querytrscheck, id).Scan(&idprd)
 		// fmt.Println("error check", errtrs)
 		if errtrs == nil {
 			fmt.Println(errtrs)
@@ -215,7 +213,7 @@ func DeleteProductById(c *gin.Context) {
 			return
 		}
 
-		tx, err := db.Begin()
+		tx, err := config.ConnectDB().Begin()
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error Gaes" + err.Error()})
 			return
@@ -249,7 +247,7 @@ func createProductId() string {
 	date := getdate.GetYMD()
 	var prdId string
 	selectProduct := "SELECT id FROM mst_product ORDER BY id DESC LIMIT 1"
-	err := db.QueryRow(selectProduct).Scan(&prdId)
+	err := config.ConnectDB().QueryRow(selectProduct).Scan(&prdId)
 	if err != nil {
 		result = "SERV" + date + "000001"
 	} else {
@@ -270,7 +268,7 @@ func createProductId() string {
 func checkNamaProductExist(product string) bool {
 	var result bool = false
 	selectProduct := "SELECT name FROM mst_product WHERE LOWER(name) = LOWER($1)"
-	rows, err := db.Query(selectProduct, product)
+	rows, err := config.ConnectDB().Query(selectProduct, product)
 	if err != nil {
 		panic(err)
 	}
